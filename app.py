@@ -14,8 +14,7 @@ CORS(app)
 HF_TOKEN = os.getenv("HF_TOKEN", "")
 
 # Hugging Face Inference API endpoint for Flux Dev model
-API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev"
-
+API_URL = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-dev"
 headers = {
     "Authorization": f"Bearer {HF_TOKEN}"
 }
@@ -42,7 +41,7 @@ def generate_image():
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
         
-        if not HF_TOKEN or HF_TOKEN == "your_hf_token_here":
+        if not HF_TOKEN:
             return jsonify({
                 'error': 'HuggingFace token not configured. Please set HF_TOKEN environment variable.',
                 'help': 'Get your token from https://huggingface.co/settings/tokens'
@@ -57,8 +56,7 @@ def generate_image():
             "parameters": {
                 "width": width,
                 "height": height,
-                "num_inference_steps": steps,
-                "guidance_scale": 3.5
+                "num_inference_steps": steps
             }
         }
         
